@@ -1,144 +1,46 @@
-#include <stdio.h>
-#include <stdlib.h>
-#define MAX 5
-void insert_by_priority(int);
-void delete_by_priority(int);
-void create();
-void check(int);
-void display_pqueue();
- 
-int pri_que[MAX];
-int front, rear;
- 
-void main()
-{
-    int n, ch;
- 
-    printf("\n1 - Insert an element into queue");
-    printf("\n2 - Delete an element from queue");
-    printf("\n3 - Display queue elements");
-    printf("\n4 - Exit");
- 
-    create();
- 
-    while (1)
+    #include<iostream>
+    #include<queue>
+    #include<bits/stdc++.h>
+    using namespace std;
+    int main()
     {
-        printf("\nEnter your choice : ");    
-        scanf("%d", &ch);
- 
-        switch (ch)
-        {
-        case 1: 
-            printf("\nEnter value to be inserted : ");
-            scanf("%d",&n);
-            insert_by_priority(n);
-            break;
-        case 2:
-            printf("\nEnter value to delete : ");
-            scanf("%d",&n);
-            delete_by_priority(n);
-            break;
-        case 3: 
-            display_pqueue();
-            break;
-        case 4: 
-            exit(0);
-        default: 
-            printf("\nChoice is incorrect, Enter a correct choice");
-        }
-    }
-}
- 
-/* Function to create an empty priority queue */
-void create()
-{
-    front = rear = -1;
-}
- 
-/* Function to insert value into priority queue */
-void insert_by_priority(int data)
-{
-    if (rear >= MAX - 1)
+    queue <int> hp;
+    queue <int> lp;
+    char choice;
+    int d;
+    char p;
+    do
     {
-        printf("\nQueue overflow no more elements can be inserted");
-        return;
-    }
-    if ((front == -1) && (rear == -1))
-    {
-        front++;
-        rear++;
-        pri_que[rear] = data;
-        return;
-    }    
+    cout<<"enter data along with priority:";
+    cin>>d>>p;
+     
+    if(p=='H'||p=='h')
+    hp.push(d);
     else
-        check(data);
-    rear++;
-}
- 
-/* Function to check priority and place element */
-void check(int data)
-{
-    int i,j;
- 
-    for (i = 0; i <= rear; i++)
+    lp.push(d);
+     
+    cout<<"\ndo you want to continue[y/n]:";
+    cin>>choice;
+     
+    }while(choice=='y'||choice=='Y');
+     
+    cout<<"\nprocessing data...";
+    cout<<"\nprocessing high priority queue...";
+     
+    while(!hp.empty())
     {
-        if (data >= pri_que[i])
-        {
-            for (j = rear + 1; j > i; j--)
-            {
-                pri_que[j] = pri_que[j - 1];
-            }
-            pri_que[i] = data;
-            return;
-        }
+    cout<<hp.front()<<"\t";
+    hp.pop();
     }
-    pri_que[i] = data;
-}
- 
-/* Function to delete an element from queue */
-void delete_by_priority(int data)
-{
-    int i;
- 
-    if ((front==-1) && (rear==-1))
+     
+    cout<<"\nprocessing low priority queue...";
+     
+    while(!lp.empty())
     {
-        printf("\nQueue is empty no elements to delete");
-        return;
+    cout<<lp.front()<<"\t";
+    lp.pop();
     }
- 
-    for (i = 0; i <= rear; i++)
-    {
-        if (data == pri_que[i])
-        {
-            for (; i < rear; i++)
-            {
-                pri_que[i] = pri_que[i + 1];
-            }
- 
-        pri_que[i] = -99;
-        rear--;
- 
-        if (rear == -1) 
-            front = -1;
-        return;
-        }
+    cout<<"\n over";
+     
+    return 0;
     }
-    printf("\n%d not found in queue to delete", data);
-}
- 
-/* Function to display queue elements */
-void display_pqueue()
-{
-    if ((front == -1) && (rear == -1))
-    {
-        printf("\nQueue is empty");
-        return;
-    }
- 
-    for (; front <= rear; front++)
-    {
-        printf(" %d ", pri_que[front]);
-    }
- 
-    front = 0;
-}
