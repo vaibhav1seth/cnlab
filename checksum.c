@@ -1,93 +1,55 @@
 #include<stdio.h>
 #include<string.h>
- 
-int main()
+int checksum(int fl)
 {
-    char a[20],b[20];
-    char sum[20],complement[20];
-    int i,length;
-    
-	printf("Enter first binary string\n");
-    scanf("%s",&a);
-    printf("Enter second binary string\n");
-    scanf("%s",&b);
-    
-    if(strlen(a)==strlen(b)){
-		length = strlen(a);
-		char carry='0';
-        
-		for(i=length-1;i>=0;i--)
-        {
-			if(a[i]=='0' && b[i]=='0' && carry=='0')
-            {
-                sum[i]='0';
-                carry='0';
-            }
-            else if(a[i]=='0' && b[i]=='0' && carry=='1')
-            {
-                sum[i]='1';
-                carry='0';
- 
-            }
-            else if(a[i]=='0' && b[i]=='1' && carry=='0')
-            {
-                sum[i]='1';
-                carry='0';
- 
-            }
-            else if(a[i]=='0' && b[i]=='1' && carry=='1')
-            {
-                sum[i]='0';
-                carry='1';
- 
-            }
-            else if(a[i]=='1' && b[i]=='0' && carry=='0')
-            {
-                sum[i]='1';
-                carry='0';
- 
-            }
-            else if(a[i]=='1' && b[i]=='0' && carry=='1')
-            {
-                sum[i]='0';
-                carry='1';
- 
-            }
-            else if(a[i]=='1' && b[i]=='1' && carry=='0')
-            {
-                sum[i]='0';
-                carry='1';
- 
-            }
-            else if(a[i]=='1' && b[i]=='1' && carry=='1')
-            {
-                sum[i]='1';
-                carry='1';
- 
-            }
-            else
-                break;
-        }
-        
-		printf("\nSum=%c%s",carry,sum);
-		
-		for(i=0;i<length;i++)
-        {
-            if(sum[i]=='0')
-                complement[i]='1';
-            else
-                complement[i]='0';
-        }
-        
-        if(carry=='1')
-            carry='0';
-        else
-            carry='1';
-        
-		printf("\nChecksum=%c%s",carry,complement);
-	}
-	else {
-		printf("\nWrong input strings");
-	}
+char in[100];
+int buf[25];
+int i,sum=0,n,temp,temp1;
+//printf("enter something\n");
+scanf("%s",in);
+if(strlen(in)%2!=0)
+n=(strlen(in)+1)/2;
+else
+n=(strlen(in))/2;
+for(i=0;i<n;i++)
+{
+	temp=in[i*2];
+	temp=(temp*256)+in[(i*2)+1];
+	sum=sum+temp;
 }
+if(fl==1){
+	printf("Enter the checksum value \n");
+	scanf ("%x", &temp);
+	sum+=temp;}
+if(sum%65536!=0){
+n=sum%65536;
+sum=(sum/65536) + n;}
+sum=65535-sum;
+printf("%x\n",sum);
+return sum;
+}
+void main()
+{
+int ch,sum;
+do{
+printf("1.Encode \n2.Decode \n3.Exit \n");
+scanf("%d",&ch);
+switch(ch)
+	{
 
+		case 1: printf("Enter the string \n");
+			sum=checksum(0);
+			printf("Checksum to append is:%x \n",sum);
+			break;
+		case 2: printf("Enter the string \n");
+			sum=checksum(1);
+			if(sum!=0)
+			printf("The data has been tampered with or invalid checksum\n");
+			else
+			printf("The checksum is valid \n");
+			break;
+		case 3: break;
+		default: printf("Invalid option, try again \n");
+	}
+}while(ch!=3);
+}
